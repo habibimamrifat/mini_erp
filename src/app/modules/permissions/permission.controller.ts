@@ -66,8 +66,21 @@ const toggleDeletePermission = async (req: Request, res: Response) => {
   });
 };
 
+const getAllModules = async (req: Request, res: Response) => {
+  const result = await permissionService.getAllModules();
+
+  res.status(200).json({
+    success: true,
+    message: "Modules retrieved successfully",
+    data: result,
+  });
+};
+
+
+
 export const PermissionController = {
   createPermission,
+  getAllModules,
   getAllPermissions,
   getSinglePermission,
   updatePermission,

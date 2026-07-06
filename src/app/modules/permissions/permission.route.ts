@@ -3,29 +3,22 @@ import { PermissionController } from "./permission.controller";
 
 const router = Router();
 
-router.post(
-  "/createPermission",
-  PermissionController.createPermission
-);
+router.post("/createPermission", PermissionController.createPermission);
 
-router.get(
-  "/getAllPermissions",
-  PermissionController.getAllPermissions
-);
+router.get("/getAllPermissions", PermissionController.getAllPermissions);
 
 router.get(
   "/getSinglePermission/:id",
-  PermissionController.getSinglePermission
+  PermissionController.getSinglePermission,
 );
 
-router.patch(
-  "/updatePermission/:id",
-  PermissionController.updatePermission
-);
+router.patch("/updatePermission/:id", PermissionController.updatePermission);
 
 router.delete(
   "/toggleDeletePermission/:id",
-  PermissionController.toggleDeletePermission
+  PermissionController.toggleDeletePermission,
 );
+
+router.get("/getAllModules", PermissionController.getAllModules);
 
 export const PermissionRoutes = router;

@@ -73,10 +73,19 @@ const toggleDeletePermission = async (id: string) => {
   return permission;
 };
 
+const getAllModules = async () => {
+  const modules = await PermissionModel.distinct("module", {
+    isDeleted: false,
+  });
+
+  return modules;
+};
+
 export const permissionService = {
   createPermission,
   getAllPermissions,
   getSinglePermission,
+  getAllModules,
   updatePermission,
   toggleDeletePermission,
 };

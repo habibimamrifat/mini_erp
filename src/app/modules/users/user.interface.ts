@@ -1,12 +1,16 @@
 import { Types } from "mongoose";
-
 export interface IUser {
-  img?: string;
   name: string;
-  email?: string;
-  phoneNumber: string;
+  email: string;
+  phone: string;
+
   password?: string;
+
   roleId: Types.ObjectId;
-  rolePermissionBlueprintId: Types.ObjectId;
+  permissionBlueprintId?: Types.ObjectId;
   blockedPermissionIds: Types.ObjectId[];
+
+  img?: string;
+
+  isDeleted: boolean;
 }
