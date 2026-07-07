@@ -12,8 +12,11 @@ async function bootstrap() {
     console.log("MongoDB Connected");
     await seedDatabase();
 
-    app.listen(config.port, () => {
-      console.log(`Server running on ${config.port}`);
+    const port = config.port || 3000;
+    console.log(`Starting server on port ======>>> ${port}...`);
+
+    app.listen(port, () => {
+      console.log(`Server running on ${port}`);
     });
   } catch (err) {
     console.log(err);
