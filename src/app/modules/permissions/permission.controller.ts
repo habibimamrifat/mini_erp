@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
+import sendResponse from "../../utils/sendResponse";
 import { permissionService } from "./permission.service";
 
 const createPermission = async (req: Request, res: Response) => {
   const result = await permissionService.createPermission(req.body);
 
-  res.status(201).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 201,
     message: "Permission created successfully",
     data: result,
   });
@@ -20,26 +22,26 @@ const getAllPermissions = async (req: Request, res: Response) => {
         : undefined,
   });
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Permissions retrieved successfully",
     data: result,
   });
 };
-
 
 const getSinglePermission = async (req: Request, res: Response) => {
   const result = await permissionService.getSinglePermission(
     req.params.id as string
   );
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Permission retrieved successfully",
     data: result,
   });
 };
-
 
 const updatePermission = async (req: Request, res: Response) => {
   const result = await permissionService.updatePermission(
@@ -47,8 +49,9 @@ const updatePermission = async (req: Request, res: Response) => {
     req.body
   );
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Permission updated successfully",
     data: result,
   });
@@ -59,8 +62,9 @@ const toggleDeletePermission = async (req: Request, res: Response) => {
     req.params.id as string
   );
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Permission status updated successfully",
     data: result,
   });
@@ -69,14 +73,13 @@ const toggleDeletePermission = async (req: Request, res: Response) => {
 const getAllModules = async (req: Request, res: Response) => {
   const result = await permissionService.getAllModules();
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Modules retrieved successfully",
     data: result,
   });
 };
-
-
 
 export const PermissionController = {
   createPermission,

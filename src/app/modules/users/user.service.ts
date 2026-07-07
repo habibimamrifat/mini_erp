@@ -237,9 +237,22 @@ const getAllUsers = async (query: IUserQuery, currentUserRole: string) => {
   }
 
   const users = await UserModel.find(filter)
-    .populate("roleId")
-    .populate("permissionBlueprintId")
-    .populate("blockedPermissionIds");
+    .populate({
+      path: "roleId",
+      select: "name",
+    })
+    .populate({
+      path: "permissionBlueprintId",
+      select: "name permissionIds",
+      populate: {
+        path: "permissionIds",
+        select: "name code module",
+      },
+    })
+    .populate({
+      path: "blockedPermissionIds",
+      select: "name code module",
+    })
 
   return users;
 };

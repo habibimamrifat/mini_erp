@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import sendResponse from "../../utils/sendResponse";
 import { productService } from "./product.service";
 import { uploadToCloudinary } from "../../utils/uploadToCloudinary";
 
@@ -9,16 +10,18 @@ const createProduct = async (req: Request, res: Response) => {
   }
 
   if (!req.body.img) {
-    return res.status(400).json({
+    return sendResponse(res, {
       success: false,
+      statusCode: 400,
       message: "Product image is required",
     });
   }
 
   const result = await productService.createProduct(req.body);
 
-  res.status(201).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 201,
     message: "Product created successfully",
     data: result,
   });
@@ -34,8 +37,9 @@ const getAllProducts = async (req: Request, res: Response) => {
     isDeleted: isDeleted === undefined ? undefined : isDeleted === "true",
   });
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Products retrieved successfully",
     data: result,
   });
@@ -51,8 +55,9 @@ const updateProduct = async (req: Request, res: Response) => {
 
   const result = await productService.updateProduct(id, req.body);
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Product updated successfully",
     data: result,
   });
@@ -63,8 +68,9 @@ const toggleDeleteProduct = async (req: Request, res: Response) => {
 
   const result = await productService.toggleDeleteProduct(id);
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Product delete status updated successfully",
     data: result,
   });

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
+import sendResponse from "../../utils/sendResponse";
 import { rolePermissionBlueprintService } from "./rolePermissinBlueprint.service";
-
 
 const createRolePermissionBlueprint = async (
   req: Request,
@@ -11,8 +11,9 @@ const createRolePermissionBlueprint = async (
       req.body
     );
 
-  res.status(201).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 201,
     message: "Blueprint created successfully",
     data: result,
   });
@@ -27,8 +28,9 @@ const getAllRolePermissionBlueprints = async (
       req.query as Record<string, unknown>
     );
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Blueprints retrieved successfully",
     data: result,
   });
@@ -46,8 +48,9 @@ const updateRolePermissionBlueprint = async (
       req.body
     );
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Blueprint updated successfully",
     data: result,
   });
@@ -62,8 +65,9 @@ const deleteRolePermissionBlueprint = async (
   const result =
     await rolePermissionBlueprintService.deleteRolePermissionBlueprint(id);
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: "Blueprint deleted successfully",
     data: result,
   });
@@ -83,8 +87,9 @@ const updateBlueprintPermission = async (
       action
     );
 
-  res.status(200).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 200,
     message: `Permission ${action}ed successfully`,
     data: result,
   });
@@ -95,5 +100,5 @@ export const RolePermissionBlueprintController = {
   getAllRolePermissionBlueprints,
   updateRolePermissionBlueprint,
   deleteRolePermissionBlueprint,
-  updateBlueprintPermission
+  updateBlueprintPermission,
 };

@@ -1,21 +1,15 @@
 import { Request, Response } from "express";
+import sendResponse from "../../utils/sendResponse";
 import { saleService } from "./sell.service";
 
-
-const createSale = async (
-  req: Request,
-  res: Response
-) => {
-  // Later this will come from JWT
+const createSale = async (req: Request, res: Response) => {
   const { salesmanId } = req.body;
 
-  const result = await saleService.createSale(
-    salesmanId,
-    req.body
-  );
+  const result = await saleService.createSale(salesmanId, req.body);
 
-  res.status(201).json({
+  return sendResponse(res, {
     success: true,
+    statusCode: 201,
     message: "Sale created successfully",
     data: result,
   });
