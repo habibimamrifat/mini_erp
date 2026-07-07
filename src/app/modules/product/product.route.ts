@@ -68,7 +68,7 @@ router.get(
     name: "Read Product Analytics",
     description: "Allows reading product analytics",
     requiredModuleAccess: ["product"],
-    requiredPermissionAccess: ["product:read"],
+    requiredPermissionAccess: ["product:read:analytics"],
   }),
   ProductController.getAnalytics,
 );
