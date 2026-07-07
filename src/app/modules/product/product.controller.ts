@@ -6,7 +6,7 @@ import { uploadToCloudinary } from "../../utils/uploadToCloudinary";
 const createProduct = async (req: Request, res: Response) => {
   if (req.file) {
     const imageUrl = await uploadToCloudinary(req.file.path, "users");
-    req.body.img = imageUrl;
+    req.body.productImg = imageUrl;
   }
 
   if (!req.body.img) {
@@ -85,7 +85,7 @@ const getAnalytics = async (req: Request, res: Response) => {
     message: "Product analytics retrieved successfully",
     data: result,
   });
-}
+};
 
 export const ProductController = {
   createProduct,
