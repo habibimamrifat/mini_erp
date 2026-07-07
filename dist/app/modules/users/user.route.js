@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRoutes = void 0;
+const express_1 = require("express");
+const user_controller_1 = require("./user.controller");
+const multer_1 = require("../../middlewares/multer");
+const router = (0, express_1.Router)();
+router.post("/createUser", multer_1.upload.single("img"), user_controller_1.UserController.createUser);
+router.post("/createCustomer", multer_1.upload.single("img"), user_controller_1.UserController.createCustomer);
+router.patch("/updateUser/:id", multer_1.upload.single("img"), user_controller_1.UserController.updateUser);
+router.patch("/togglePermissionDeletion/:id", user_controller_1.UserController.togglePermissionDeletion);
+router.get("/getAllUsers", user_controller_1.UserController.getAllUsers);
+exports.UserRoutes = router;

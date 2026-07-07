@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RolePermissionBlueprintRoutes = void 0;
+const express_1 = require("express");
+const rolePermissionBlueprint_controller_1 = require("./rolePermissionBlueprint.controller");
+const router = (0, express_1.Router)();
+router.post("/createRolePermissionBlueprint", rolePermissionBlueprint_controller_1.RolePermissionBlueprintController.createRolePermissionBlueprint);
+router.get("/getAllRolePermissionBlueprints", rolePermissionBlueprint_controller_1.RolePermissionBlueprintController.getAllRolePermissionBlueprints);
+router.patch("/updateRolePermissionBlueprint/:id", rolePermissionBlueprint_controller_1.RolePermissionBlueprintController.updateRolePermissionBlueprint);
+router.delete("/deleteRolePermissionBlueprint/:id", rolePermissionBlueprint_controller_1.RolePermissionBlueprintController.deleteRolePermissionBlueprint);
+router.patch("/updateBlueprintPermission/:id", rolePermissionBlueprint_controller_1.RolePermissionBlueprintController.updateBlueprintPermission);
+exports.RolePermissionBlueprintRoutes = router;

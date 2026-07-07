@@ -63,4 +63,4 @@ async function seed() {
   }
 }
 
-seed();
+export const seedDatabase = seed;
