@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import app from "./app";
 import config from "./app/config";
-import { seedDatabase } from "./app/seed/seed";
 import { syncPermissions } from "./app/registry/accessPlicy.sync";
+import { seedRolePermissionBlueprintsAdmin } from "./app/modules/rolePermissionBlueprint/rolePermissionBlueprint.seed";
+import { seedRoles } from "./app/seed/seedRoles";
+import { seedAdmin } from "./app/modules/users/user.seed";
 
 
 
@@ -12,10 +14,14 @@ async function bootstrap() {
     await mongoose.connect(config.database_url! as string);
 
     console.log("MongoDB Connected");
-    await seedDatabase();
 
-    // Automatically sync all registered policies
+
     await syncPermissions()
+    await seedRoles()
+    await seedRolePermissionBlueprintsAdmin()
+    await seedAdmin()
+
+    // await seedDatabase();
 
     const port = config.port || 3000;
     console.log(`Starting server on port ======>>> ${port}...`);

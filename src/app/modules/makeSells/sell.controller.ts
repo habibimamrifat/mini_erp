@@ -3,8 +3,7 @@ import sendResponse from "../../utils/sendResponse";
 import { saleService } from "./sell.service";
 
 const createSale = async (req: Request, res: Response) => {
-  const { salesmanId } = req.body;
-
+  const salesmanId = req?.user?.userId as string;
   const result = await saleService.createSale(salesmanId, req.body);
 
   return sendResponse(res, {

@@ -13,6 +13,7 @@ const rolePermissionBlueprintSchema =
         type: Schema.Types.ObjectId,
         ref: "Role",
         required: true,
+        unique: true,
       },
       permissionIds: [
         {

@@ -1,4 +1,7 @@
+import httpStatus from "http-status";
+import AppError from "../../errors/appError";
 import { PermissionModel } from "../permissions/permissin.model";
+import { RoleModel } from "../roles/role.model";
 import { RolePermissionBlueprintModel } from "./relePermissionBlueprint.model";
 import { IRolePermissionBlueprint } from "./rolePermissionBlueprint.interface";
 
@@ -6,9 +9,56 @@ import { IRolePermissionBlueprint } from "./rolePermissionBlueprint.interface";
 const createRolePermissionBlueprint = async (
   payload: IRolePermissionBlueprint
 ) => {
+  // Check if the role exists
+  const role = await RoleModel.findById(payload.roleId);
+
+  if (!role) {
+    throw new AppError(httpStatus.NOT_FOUND, "Role not found.");
+  }
+
+  // Check if a blueprint already exists for the role
+  const existingBlueprint = await RolePermissionBlueprintModel.findOne({
+    roleId: payload.roleId,
+  });
+
+  if (existingBlueprint) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      "A permission blueprint already exists for this role. You may update it instead."
+    );
+  }
+
+  // Check that all permission IDs exist
+  const permissions = await PermissionModel.find({
+    _id: { $in: payload.permissionIds },
+    isDeleted: false,
+  }).select("_id");
+
+  const foundPermissionIds = new Set(
+    permissions.map((permission) => permission._id.toString())
+  );
+
+  const invalidPermissionIds = payload.permissionIds.filter(
+    (id) => !foundPermissionIds.has(id.toString())
+  );
+
+  if (invalidPermissionIds.length > 0) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `The following permission IDs are invalid: ${invalidPermissionIds.join(
+        ", "
+      )}`
+    );
+  }
+
+  // Create blueprint
   const blueprint = await RolePermissionBlueprintModel.create(payload);
+
   return blueprint;
 };
+
+
+
 
 const getAllRolePermissionBlueprints = async (
   query: Record<string, unknown>
@@ -65,14 +115,38 @@ const updateBlueprintPermission = async (
   const blueprint = await RolePermissionBlueprintModel.findById(blueprintId);
 
   if (!blueprint) {
-    throw new Error("Role Permission Blueprint not found");
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Role Permission Blueprint not found."
+    );
   }
 
   // Check if permission exists
   const permission = await PermissionModel.findById(permissionId);
 
   if (!permission) {
-    throw new Error("Permission not found");
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Permission not found."
+    );
+  }
+
+  const hasPermission = blueprint.permissionIds.some(
+    (id) => id.toString() === permissionId
+  );
+
+  if (action === "add" && hasPermission) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      "Permission already exists in this blueprint."
+    );
+  }
+
+  if (action === "remove" && !hasPermission) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Permission is not assigned to this blueprint."
+    );
   }
 
   const update =

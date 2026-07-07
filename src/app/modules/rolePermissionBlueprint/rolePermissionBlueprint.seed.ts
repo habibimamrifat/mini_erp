@@ -1,45 +1,41 @@
 import { PermissionModel } from "../permissions/permissin.model";
 import { RoleModel } from "../roles/role.model";
 import { RolePermissionBlueprintModel } from "./relePermissionBlueprint.model";
-import { Types } from "mongoose";
 
 export const seedRolePermissionBlueprintsAdmin = async () => {
-  // Fetch seeded roles and permissions
-  const roles = await RoleModel.find();
-  const permissions = await PermissionModel.find();
+  const adminRole = await RoleModel.findOne({
+    name: "Admin",
+    isDeleted: false,
+  });
 
-  // Create Role Map
-  const roleMap = new Map(roles.map((role) => [role.name, role._id]));
-  console.log("Role Map:", roleMap);
+  if (!adminRole) {
+    throw new Error("Admin role not found.");
+  }
 
-  // Create Permission Map
-  const permissionMap = new Map(
-    permissions.map((permission) => [permission.code, permission._id]),
-  );
-  console.log("Permission Map:", permissionMap);
+  // Fetch all active permissions
+  const permissions = await PermissionModel.find({
+    isDeleted: false,
+  }).select("_id");
 
-  // ==========================
-  // Admin Blueprint
-  // ==========================
-
-  const adminDefaultPermissions = permissions.map(
-    (permission) => permission._id,
-  );
-  console.log("Admin Default Permissions:", adminDefaultPermissions);
+  const permissionIds = permissions.map((permission) => permission._id);
 
   await RolePermissionBlueprintModel.updateOne(
     {
-      name: "Admin Blueprint",
+      roleId: adminRole._id,
     },
     {
-      name: "Admin Blueprint",
-      roleId: roleMap.get("Admin"),
-      permissionIds: adminDefaultPermissions,
+      $set: {
+        name: "Admin Blueprint",
+        roleId: adminRole._id,
+        permissionIds,
+      },
     },
     {
       upsert: true,
-    },
+    }
   );
 
-  console.log("✅ Admin Role Permission Blueprints Seeded");
+  console.log(
+    `✅ Admin Blueprint synced with ${permissionIds.length} permissions`
+  );
 };

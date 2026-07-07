@@ -26,14 +26,16 @@ export const seedAdmin = async () => {
     roleId: adminRole._id,
   });
 
+
+console.log("Admin Blueprint:========>>", blueprint);
+
   if (!blueprint) {
-    throw new Error("Admin permission blueprint not found.");
+    throw new Error(
+      "Admin Blueprint not found. Seed role permission blueprints first."
+    );
   }
 
-  const hashedPassword = await bcrypt.hash(
-    config.admin_password!,
-    10
-  );
+  const hashedPassword = await bcrypt.hash(config.admin_password!, 10);
 
   const admin = await UserModel.create({
     name: "Super Admin",
