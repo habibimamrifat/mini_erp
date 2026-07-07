@@ -102,10 +102,14 @@ const updateBlueprintPermission = async (
 
   return updatedBlueprint;
 };
+
+
+
 export const rolePermissionBlueprintService = {
   createRolePermissionBlueprint,
   getAllRolePermissionBlueprints,
   updateRolePermissionBlueprint,
   deleteRolePermissionBlueprint,
-  updateBlueprintPermission
+  updateBlueprintPermission,
+ 
 };

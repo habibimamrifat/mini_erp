@@ -9,6 +9,7 @@ import { AnalyticsRoutes } from "../modules/analatycs/analetycs.route";
 import { AuthRoutes } from "../modules/auth/auth.route";
 
 
+
 const router = Router();
 
 const moduleRoutes = [

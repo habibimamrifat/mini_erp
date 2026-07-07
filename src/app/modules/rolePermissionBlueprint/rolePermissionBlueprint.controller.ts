@@ -2,13 +2,10 @@ import { Request, Response } from "express";
 import sendResponse from "../../utils/sendResponse";
 import { rolePermissionBlueprintService } from "./rolePermissinBlueprint.service";
 
-const createRolePermissionBlueprint = async (
-  req: Request,
-  res: Response
-) => {
+const createRolePermissionBlueprint = async (req: Request, res: Response) => {
   const result =
     await rolePermissionBlueprintService.createRolePermissionBlueprint(
-      req.body
+      req.body,
     );
 
   return sendResponse(res, {
@@ -19,13 +16,10 @@ const createRolePermissionBlueprint = async (
   });
 };
 
-const getAllRolePermissionBlueprints = async (
-  req: Request,
-  res: Response
-) => {
+const getAllRolePermissionBlueprints = async (req: Request, res: Response) => {
   const result =
     await rolePermissionBlueprintService.getAllRolePermissionBlueprints(
-      req.query as Record<string, unknown>
+      req.query as Record<string, unknown>,
     );
 
   return sendResponse(res, {
@@ -36,16 +30,13 @@ const getAllRolePermissionBlueprints = async (
   });
 };
 
-const updateRolePermissionBlueprint = async (
-  req: Request,
-  res: Response
-) => {
+const updateRolePermissionBlueprint = async (req: Request, res: Response) => {
   const { id } = req.params as { id: string };
 
   const result =
     await rolePermissionBlueprintService.updateRolePermissionBlueprint(
       id,
-      req.body
+      req.body,
     );
 
   return sendResponse(res, {
@@ -56,10 +47,7 @@ const updateRolePermissionBlueprint = async (
   });
 };
 
-const deleteRolePermissionBlueprint = async (
-  req: Request,
-  res: Response
-) => {
+const deleteRolePermissionBlueprint = async (req: Request, res: Response) => {
   const { id } = req.params as { id: string };
 
   const result =
@@ -73,19 +61,15 @@ const deleteRolePermissionBlueprint = async (
   });
 };
 
-const updateBlueprintPermission = async (
-  req: Request,
-  res: Response
-) => {
+const updateBlueprintPermission = async (req: Request, res: Response) => {
   const { id } = req.params as { id: string };
   const { permissionId, action } = req.body;
 
-  const result =
-    await rolePermissionBlueprintService.updateBlueprintPermission(
-      id,
-      permissionId,
-      action
-    );
+  const result = await rolePermissionBlueprintService.updateBlueprintPermission(
+    id,
+    permissionId,
+    action,
+  );
 
   return sendResponse(res, {
     success: true,
@@ -94,6 +78,8 @@ const updateBlueprintPermission = async (
     data: result,
   });
 };
+
+
 
 export const RolePermissionBlueprintController = {
   createRolePermissionBlueprint,

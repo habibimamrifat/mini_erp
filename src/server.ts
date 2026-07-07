@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import app from "./app";
 import config from "./app/config";
 import { seedDatabase } from "./app/seed/seed";
+import { syncPermissions } from "./app/registry/accessPlicy.sync";
+
 
 
 async function bootstrap() {
@@ -11,6 +13,9 @@ async function bootstrap() {
 
     console.log("MongoDB Connected");
     await seedDatabase();
+
+    // Automatically sync all registered policies
+    await syncPermissions()
 
     const port = config.port || 3000;
     console.log(`Starting server on port ======>>> ${port}...`);

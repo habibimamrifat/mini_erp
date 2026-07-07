@@ -13,9 +13,12 @@ const app = express();
 // =========================
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://your-frontend.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://mini-erp-azure.vercel.app",
+    ],
     credentials: true,
-  }),
+  })
 );
 
 app.use(express.json());
