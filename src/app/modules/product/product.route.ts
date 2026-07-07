@@ -60,4 +60,16 @@ router.patch(
   ProductController.toggleDeleteProduct,
 );
 
+router.get(
+  "/getAnalytics",
+  auth,
+  accessControl({
+    key: "READ_PRODUCT_ANALYTICS",
+    name: "Read Product Analytics",
+    description: "Allows reading product analytics",
+    requiredModuleAccess: ["product"],
+    requiredPermissionAccess: ["product:read"],
+  }),
+  ProductController.getAnalytics,
+);
 export const ProductRoutes = router;

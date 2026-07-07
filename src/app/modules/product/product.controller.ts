@@ -76,9 +76,21 @@ const toggleDeleteProduct = async (req: Request, res: Response) => {
   });
 };
 
+const getAnalytics = async (req: Request, res: Response) => {
+  const result = await productService.getAnalytics();
+
+  return sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Product analytics retrieved successfully",
+    data: result,
+  });
+}
+
 export const ProductController = {
   createProduct,
   getAllProducts,
   updateProduct,
   toggleDeleteProduct,
+  getAnalytics,
 };
