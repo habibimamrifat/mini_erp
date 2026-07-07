@@ -13,7 +13,7 @@ router.get(
     name: "Read User Analytics",
     description: "Allows reading user analytics",
     requiredModuleAccess: ["dashboard"],
-    requiredPermissionAccess: ["dashboard:view"],
+    requiredPermissionAccess: ["dashboard:view","dashboard:view:partial"],
   }),
   AnalyticsController.getUserAnalytics,
 );

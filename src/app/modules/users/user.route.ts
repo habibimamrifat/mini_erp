@@ -15,7 +15,7 @@ router.post(
     name: "Create User",
     description: "Allows creating users",
     requiredModuleAccess: ["user"],
-    requiredPermissionAccess: ["user:create"],
+    requiredPermissionAccess: ["user:create", "user:create:customer"],
   }),
   UserController.createUser,
 );
@@ -69,7 +69,7 @@ router.get(
     name: "Read Users",
     description: "Allows reading users",
     requiredModuleAccess: ["user"],
-    requiredPermissionAccess: ["user:read"],
+    requiredPermissionAccess: ["user:read", "user:read:customer"],
   }),
   UserController.getAllUsers,
 );
