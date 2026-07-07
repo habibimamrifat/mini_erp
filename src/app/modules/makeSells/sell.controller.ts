@@ -14,6 +14,19 @@ const createSale = async (req: Request, res: Response) => {
   });
 };
 
+const getSalesmanAnalytics = async (req: Request, res: Response) => {
+  const salesmanId = req?.user?.userId as string;
+  const result = await saleService.getSalesmanAnalytics(salesmanId);
+
+  return sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Salesman analytics retrieved successfully",
+    data: result,
+  });
+};
+
 export const SaleController = {
   createSale,
+  getSalesmanAnalytics
 };

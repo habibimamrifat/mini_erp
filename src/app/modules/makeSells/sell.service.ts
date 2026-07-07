@@ -3,6 +3,7 @@ import { UserModel } from "../users/user.model";
 import { ISale } from "./sell.interface";
 import { ProductModel } from "../product/product.model";
 import { SaleModel } from "./sell.model";
+import { Types } from "mongoose";
 
 const createSale = async (salesmanId: string, payload: Partial<ISale>) => {
   const session = await mongoose.startSession();
@@ -105,6 +106,121 @@ const createSale = async (salesmanId: string, payload: Partial<ISale>) => {
   }
 };
 
+
+const getSalesmanAnalytics = async (salesmanId: string) => {
+  const sales = await SaleModel.aggregate([
+    {
+      $match: {
+        salesmanId: new Types.ObjectId(salesmanId),
+      },
+    },
+
+    {
+      $lookup: {
+        from: "users",
+        localField: "salesmanId",
+        foreignField: "_id",
+        as: "salesman",
+      },
+    },
+
+    {
+      $unwind: "$salesman",
+    },
+
+    {
+      $lookup: {
+        from: "users",
+        localField: "customerId",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+
+    {
+      $unwind: "$customer",
+    },
+
+    {
+      $project: {
+        saleId: "$_id",
+        createdAt: 1,
+
+        salesman: {
+          _id: "$salesman._id",
+          name: "$salesman.name",
+          email: "$salesman.email",
+        },
+
+        customer: {
+          _id: "$customer._id",
+          name: "$customer.name",
+        },
+
+        totalItems: {
+          $sum: "$items.quantity",
+        },
+
+        revenue: {
+          $sum: "$items.totalPriceForThisItem",
+        },
+
+        profit: {
+          $sum: "$items.profitAmount",
+        },
+      },
+    },
+
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+  ]);
+
+  if (!sales.length) {
+    return {
+      salesman: null,
+      summary: {
+        totalSales: 0,
+        totalItemsSold: 0,
+        totalRevenue: 0,
+        totalProfit: 0,
+      },
+      sales: [],
+    };
+  }
+
+  const summary = sales.reduce(
+    (acc, sale) => {
+      acc.totalSales++;
+
+      acc.totalItemsSold += sale.totalItems;
+
+      acc.totalRevenue += sale.revenue;
+
+      acc.totalProfit += sale.profit;
+
+      return acc;
+    },
+    {
+      totalSales: 0,
+      totalItemsSold: 0,
+      totalRevenue: 0,
+      totalProfit: 0,
+    }
+  );
+
+  return {
+    salesman: sales[0].salesman,
+    summary,
+    sales,
+  };
+};
+
+
+
 export const saleService = {
   createSale,
+  getSalesmanAnalytics
 };
