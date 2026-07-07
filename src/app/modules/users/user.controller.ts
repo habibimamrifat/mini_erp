@@ -3,8 +3,13 @@ import { userService } from "./user.service";
 import { IUser } from "./user.interface";
 import { UserModel } from "./user.model";
 import { RoleModel } from "../roles/role.model";
+import { uploadToCloudinary } from "../../utils/uploadToCloudinary";
 
 const createUser = async (req: Request, res: Response) => {
+  if (req.file) {
+    const imageUrl = await uploadToCloudinary(req.file.path, "users");
+    req.body.img = imageUrl;
+  }
   const result = await userService.createUser(req.body);
 
   res.status(201).json({
@@ -15,8 +20,12 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const createCustomer = async (req: Request, res: Response) => {
-  const result = await userService.createCustomer(req.body);
+  if (req.file) {
+    const imageUrl = await uploadToCloudinary(req.file.path, "users");
+    req.body.img = imageUrl;
+  }
 
+  const result = await userService.createCustomer(req.body);
   res.status(201).json({
     success: true,
     message: "Customer created successfully",
@@ -26,6 +35,11 @@ const createCustomer = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params as { id: string };
+
+    if (req.file) {
+    const imageUrl = await uploadToCloudinary(req.file.path, "users");
+    req.body.img = imageUrl;
+  }
 
   const result = await userService.updateUser(id, req.body);
 

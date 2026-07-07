@@ -6,6 +6,7 @@ import { UserRoutes } from "../modules/users/user.route";
 import { ProductRoutes } from "../modules/product/product.route";
 import { SaleRoutes } from "../modules/makeSells/sell.route";
 import { AnalyticsRoutes } from "../modules/analatycs/analetycs.route";
+import { AuthRoutes } from "../modules/auth/auth.route";
 
 
 const router = Router();
@@ -14,6 +15,10 @@ const moduleRoutes = [
   {
     path: "/roles",
     route: RoleRoutes,
+  },
+  {
+    path: "/auth",
+    route: AuthRoutes,
   },
   {
     path: "/users",

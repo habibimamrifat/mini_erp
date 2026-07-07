@@ -7,6 +7,8 @@ import { RoleModel } from "../modules/roles/role.model";
 import { permissions } from "./permission.seed";
 import { roles } from "./role.seed";
 import { seedRolePermissionBlueprints } from "../modules/rolePermissionBlueprint/rolePermissionBlueprint.seed";
+import { seedAdmin } from "../modules/users/user.seed";
+
 
 dotenv.config();
 
@@ -49,6 +51,8 @@ async function seed() {
     // Seed Blueprints
     
     await seedRolePermissionBlueprints();
+    //seed admin user
+    await seedAdmin()
 
     console.log("Seeding Completed");
 
