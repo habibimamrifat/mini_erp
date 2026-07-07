@@ -16,9 +16,10 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://mini-erp-azure.vercel.app",
+      "https://mini-erp-main.vercel.app",
     ],
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
