@@ -9,7 +9,7 @@ const createProduct = async (req: Request, res: Response) => {
     req.body.productImg = imageUrl;
   }
 
-  if (!req.body.img) {
+  if (!req.body.productImg) {
     return sendResponse(res, {
       success: false,
       statusCode: 400,
@@ -50,7 +50,7 @@ const updateProduct = async (req: Request, res: Response) => {
 
   if (req.file) {
     const imageUrl = await uploadToCloudinary(req.file.path, "users");
-    req.body.img = imageUrl;
+    req.body.productImg = imageUrl;
   }
 
   const result = await productService.updateProduct(id, req.body);
